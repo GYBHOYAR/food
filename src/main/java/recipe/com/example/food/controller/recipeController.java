@@ -1,5 +1,6 @@
 package recipe.com.example.food.controller;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,11 +18,15 @@ import recipe.com.example.food.Exceptions.RecipeAlreadyExistsException;
 import recipe.com.example.food.Exceptions.RecipeIdNotFoundException;
 import recipe.com.example.food.Exceptions.RecipeNameNotFoundException;
 import recipe.com.example.food.Service.RecipeService;
+import recipe.com.example.food.entity.Ingredient;
 import recipe.com.example.food.entity.recipes;
+import recipe.com.example.food.utility.GlobalResources;
 
 @RestController
 @RequestMapping("/recipe")
 public class recipeController {
+	
+	private Logger logger = GlobalResources.getLogger(UserController.class);
 	
 	@Autowired
 	private RecipeService recipeService;
@@ -34,6 +39,8 @@ public class recipeController {
 })
 	public recipes createRecipe(@RequestBody recipes recipe ) throws RecipeAlreadyExistsException {
 		
+		String methodName = "createRecipe()";
+		logger.info(methodName + "called");
 		
 		return this.recipeService.createRecipe(recipe);
 		
@@ -47,6 +54,10 @@ public class recipeController {
 	@ApiResponse(code = 200 ,message = "Internal server error")
 })
 	public recipes getRecipe(@PathVariable("recipeName") String recipeName) throws RecipeNameNotFoundException {
+		
+		String methodName = "getRecipe()";
+		logger.info(methodName + "called");
+		
 		return this.recipeService.getRecipe(recipeName);
 	}
 	
@@ -60,6 +71,10 @@ public class recipeController {
 	@ApiResponse(code = 200 ,message = "Internal server error")
 })
 	public recipes deleteRecipe(@PathVariable("recipeId") Integer recipeId) throws RecipeIdNotFoundException {
+		
+		String methodName = "deleteRecipe()";
+		logger.info(methodName + "called");
+		
 		return this.recipeService.deleteRecipe(recipeId);
 	}
 
@@ -73,6 +88,10 @@ public class recipeController {
 })
 	public recipes updateRecepie(@PathVariable("recipeId") Integer recipeId, @RequestBody recipes recipe) 
 			throws  RecipeIdNotFoundException {
+		
+		String methodName = "updateRecepie()";
+		logger.info(methodName + "called");
+		
 		return this.recipeService.updateRecipe(recipeId,recipe);
 	}
 	

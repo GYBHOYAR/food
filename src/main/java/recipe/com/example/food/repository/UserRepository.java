@@ -11,8 +11,12 @@ import recipe.com.example.food.entity.user;
 
 @Repository
 public interface UserRepository extends JpaRepository<user,Integer>  {
+	
+
 
 	Optional<user> findByUserName(String userName);
+	
+	public user getUserByUserName(String userName);
 	
 	
 

@@ -1,42 +1,134 @@
 package recipe.com.example.food.Config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+//import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+//import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+//import io.swagger.models.HttpMethod;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
 	
+	
+	@Autowired
+	UserDetailsService userDetailsService;
+	/*@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+		
+}
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("username").password("password")
-		.roles("Admin");
 		
-		
+				
+		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
+
 	
-	//security for all api
-	
-	/*
-	 * @Override protected void configure(HttpSecurity http) throws Exception {
-	 * http.csrf().disable();
-	 * http.authorizeRequests().anyRequest().fullyAuthenticated().and().httpBasic();
-	 * }
-	 */
-	@Override
-	protected void configure (HttpSecurity http) throws Exception {
-		http.csrf().disable();
-		http.authorizeRequests().antMatchers("/user/*","/recipe/*","/ingredient/*").fullyAuthenticated().and()
-		.httpBasic();
-	}
-	
+
 	@Bean
-	public static NoOpPasswordEncoder passwordEncoder() {
-		return (NoOpPasswordEncoder)NoOpPasswordEncoder.getInstance();
+	public PasswordEncoder passwordEncoder() {
+		// TODO Auto-generated method stub
+		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	}
-}
+		@Override
+	protected void configure(HttpSecurity http) throws Exception{
+		http.authorizeRequests().antMatchers("/recipe/**","/ingredient/**").hasRole("ADMIN")
+		.antMatchers("/recipe/**","/ingredient/**").hasRole("CUSTOMER")
+//		.antMatchers(HttpMethod.POST).hasAnyRole("ADMIN")
+//		.antMatchers(HttpMethod.PUT).hasAnyRole("ADMIN","USER")
+//		.antMatchers(HttpMethod.DELETE).hasAnyRole("ADMIN")
+//		.antMatchers(HttpMethod.GET).hasAnyRole("ADMIN","USER")
+		
+		//.antMatchers(HttpMethod.GET,"/v1/users").hasAnyRole("ADMIN")
+		//.antMatchers(HttpMethod.GET,"/v1/users/{userId}").access("@userSecurity.hasUserId(authentication,#userId)")
+		;
+		
+		
+	    http.cors().disable();
+	http.csrf().disable();
+		http.headers().frameOptions().disable();
+		
+		super.configure(http);
+		
+		
+	}*/
+		
+//	
+	
+///////////////////////////second///////////////////////////////////////////////
+
+	@Bean 
+	public UserDetailsService getUserDetails() {
+		return new userDetailServiceImpl();			
+	}
+	
+	@Bean	public BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+	
+
+
+	@Bean
+	public DaoAuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+		daoAuthenticationProvider.setUserDetailsService(this.getUserDetails());
+		daoAuthenticationProvider.setPasswordEncoder(this.passwordEncoder());
+		return daoAuthenticationProvider;	}
+	
+	//configure method
+	@Override
+ protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+		auth.authenticationProvider(authenticationProvider());
+	}
+	
+	
+	//url congiguration
+	@Override                                   
+	protected void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests().antMatchers("/recipe/**").hasRole("ADMIN")
+		.antMatchers("/recipe/**","/ingredient/**").hasRole("CUSTOMER")
+		.antMatchers("/**").permitAll().and().formLogin().and().csrf().disable();
+		
+		super.configure(http);
+	}
+	
+//////////////////////////first//////////////////////////////////////////////////	
+//	@Override
+//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//		auth.inMemoryAuthentication().withUser("username").password("password")
+//		.roles("Admin");
+//		
+//		
+//	}
+	
+//	@Override
+//	protected void configure (HttpSecurity http) throws Exception {
+//		http.csrf().disable();
+//		http.authorizeRequests().antMatchers("/user/*","/recipe/*","/ingredient/*").fullyAuthenticated().and()
+//		.httpBasic();
+//	}
+//	
+//	@Bean
+//	public static NoOpPasswordEncoder apasswordEncoder() {
+//		return (NoOpPasswordEncoder)NoOpPasswordEncoder.getInstance();
+//	}
+
+
+}                                                                                                                                                
 

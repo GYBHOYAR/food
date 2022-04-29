@@ -2,23 +2,32 @@ package recipe.com.example.food.Service.Simpl;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import recipe.com.example.food.Exceptions.IngredientAlreadyExistsException;
 import recipe.com.example.food.Exceptions.IngredientIdNotFoundException;
 import recipe.com.example.food.Service.IngredientService;
+import recipe.com.example.food.controller.UserController;
 import recipe.com.example.food.entity.Ingredient;
 import recipe.com.example.food.repository.IngredientRepository;
+import recipe.com.example.food.utility.GlobalResources;
 
 @Service
 public class IngredientServiceImpl implements IngredientService {
+	
+	private Logger logger = GlobalResources.getLogger(UserController.class);
 	 
     @Autowired
 	private IngredientRepository ingredientRepository;
 
 	@Override
 	public Ingredient addIngredients(Ingredient ingredient) throws IngredientAlreadyExistsException{
+		
+		String methodName = "addIngredient()";
+		logger.info(methodName + "called");
+		
 		Optional<Ingredient> optional = ingredientRepository.
 				findByIngredientId(ingredient.getIngredientId());
 		try {
@@ -37,6 +46,10 @@ public class IngredientServiceImpl implements IngredientService {
 
 	@Override
 	public Ingredient updateIngredients(Integer ingredientId, Ingredient ingredient) throws IngredientIdNotFoundException {
+		
+		String methodName = "updateIngredient()";
+		logger.info(methodName + "called");
+		
 		Optional<Ingredient> optional = ingredientRepository.
 				findByIngredientId(ingredientId);
 		if(optional.isPresent()){
@@ -56,6 +69,10 @@ public class IngredientServiceImpl implements IngredientService {
 
 	@Override
 	public Ingredient getIngredient(Integer ingredientId) throws IngredientIdNotFoundException {
+		
+		String methodName = "getIngrediet()";
+		logger.info(methodName + "called");
+		
 		Optional<Ingredient> optional = ingredientRepository.
 				findByIngredientId(ingredientId);
 		if(optional.isEmpty()) {

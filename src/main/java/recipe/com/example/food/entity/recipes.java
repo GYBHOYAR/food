@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -32,15 +33,15 @@ public class recipes {
 	private int recipeId;
 	
 	//@Column(name = "Recipe Name")
-	@NotNull
+	//@NotNull
 	private String recipeName;
 	
 	//@Column(name = "instructions")
-	@NotNull
+	//@NotNull
 	private String instructions;
 	
 	//@Column(name = "category")
-	@NotNull
+	//@NotNull
 	private Category category;
 	
 	//@OneToMany
@@ -55,10 +56,10 @@ public class recipes {
 	private  LocalDate Date;
 	
 	//@Column(name = "servings")
-	@NotNull
+	//@NotNull
 	private int serving;
 	
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.EAGER,mappedBy="recipes",cascade = CascadeType.ALL)
 	@JoinColumn(name = "ingrediantId")
 	private Ingredient ingredients;
 

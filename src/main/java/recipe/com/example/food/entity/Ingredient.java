@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -55,6 +56,9 @@ public class Ingredient {
 	public String toString() {
 		return "Ingredient [ingrediantId=" + ingredientId + ", ingredient=" + ingredient + "]";
 	}
+	
+	@OneToOne
+	public recipes recipes;
 	
 	
 	

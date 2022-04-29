@@ -94,16 +94,27 @@ public class user  {//implements UserDetails
 		// TODO Auto-generated constructor stub
 	}
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "user")
-	@JsonIgnore
-	private Set<userRole> userRole = new HashSet<>();
+	//@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "user")
+	//@JsonIgnore
 	
-	public Set<userRole> getUserRole() {
+	//updated 26-4-2000
+	private String userRole;
+	public String getUserRole() {
 		return userRole;
 	}
-	public void setUserRole(Set<userRole> userRole) {
+	public void setUserRole(String userRole) {
 		this.userRole = userRole;
-	}
+	}//26-4-2000
+	
+	
+//	private Set<userRole> userRole = new HashSet<>();
+//	
+//	public Set<userRole> getUserRole() {
+//	return userRole;
+//	}
+//	public void setUserRole(Set<userRole> userRole) {
+//		this.userRole = userRole;
+//	}
 	
 	////////////////////////////////////////////////
 	/*

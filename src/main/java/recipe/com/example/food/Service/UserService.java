@@ -1,5 +1,6 @@
 package recipe.com.example.food.Service;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -19,5 +20,9 @@ public interface UserService {
 	public user deleteUser(Integer userId) throws UserNotFoundException;
 
 	public user updateUser(Integer userId,user user) throws UserNotFoundException;
+
+	public user RegisterUser(user user);
+
+	public List<user> findAllUsers();
 
 }
