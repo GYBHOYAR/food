@@ -13,13 +13,13 @@ import recipe.com.example.food.entity.user;
 
 public class CustomUserDetails implements UserDetails {
 	
-	@Autowired(required = true)
-	private BCryptPasswordEncoder passwordEncoder;
+	//@Autowired(required = true)
+	//private BCryptPasswordEncoder passwordEncoder;
 	
 	private static final long serialVersionUID = 1L;
 	private user user;
 
-	public CustomUserDetails( user user) {
+	public CustomUserDetails(user user) {
 		super();
 		this.user = user;
 	}
@@ -34,14 +34,16 @@ public class CustomUserDetails implements UserDetails {
 	@Override
 	public String getPassword() {
 		
-		return this.user.getPassword();
+		//return passwordEncoder.encode(this.user.getPassword());
+		return user.getPassword();
 	}
 
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub
-		//return this.user.getUserName();
-		return passwordEncoder.encode(user.getPassword());
+		return this.user.getUserName();
+		//return passwordEncoder.encode(user.getPassword());
+		
 	}
 
 	@Override

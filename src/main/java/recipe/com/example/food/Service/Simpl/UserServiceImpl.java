@@ -20,6 +20,10 @@ import recipe.com.example.food.repository.RoleRepository;
 import recipe.com.example.food.repository.UserRepository;
 import recipe.com.example.food.utility.GlobalResources;
 
+/**
+ * @author HP
+ *
+ */
 @Service
 public class UserServiceImpl implements UserService {
 	
@@ -35,6 +39,14 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private RoleRepository roleRepository;
 
+	
+	/**
+	 * method takes user entity as input,
+	 * checks weather user with same userName present in database or not
+	 * if user is not there then new user gets created
+	 * is user with same user name is threr then exception is thrown
+	 *
+	 */
 	@Override
 	public user createUser(user user, Set<userRole> userRoles) throws UserAlreadyExists {
 		
@@ -53,6 +65,13 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 
+	/**
+	 * method takes username as input parameter ,
+	 * checkes weather user is present in database
+	 * if user is present returns user,
+	 * idf user is not present returns exception
+	 *
+	 */
 	@Override
 	public user getUser(String userName) throws UserException {
 		
@@ -69,6 +88,13 @@ public class UserServiceImpl implements UserService {
 		}
 	
 
+	/**
+	 * method takes userId as a input parameter
+	 * checkes weather user is present in  database
+	 * if user is present that user gets deleted
+	 * else exception is thrown
+	 *
+	 */
 	@Override
 	public user deleteUser(Integer userId) throws UserNotFoundException {
 		
@@ -84,7 +110,14 @@ public class UserServiceImpl implements UserService {
 		userRepository.deleteById(userId);;
 		return user;
 	}
-
+	
+	/**
+	 * method takes user id and new user data as an input parameter,
+	 * checkes weather user is present in database
+	 * if user is present in database that user gets updated with new data,
+	 * else exception is thrown 
+	 *
+	 */
 	@Override
 	public user updateUser(Integer userId, user user ) throws UserNotFoundException{
 		
@@ -117,7 +150,10 @@ public class UserServiceImpl implements UserService {
 		}
 		return user;
 	}
-
+	/**
+	 *method returns list of all the users present in database
+	 *
+	 */
 	@Override
 	public List<user> findAllUsers() {
 		

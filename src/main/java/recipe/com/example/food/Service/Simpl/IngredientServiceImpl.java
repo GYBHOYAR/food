@@ -13,7 +13,10 @@ import recipe.com.example.food.controller.UserController;
 import recipe.com.example.food.entity.Ingredient;
 import recipe.com.example.food.repository.IngredientRepository;
 import recipe.com.example.food.utility.GlobalResources;
-
+/**
+ * @author Gunjan Bhoyar
+ *
+ */
 @Service
 public class IngredientServiceImpl implements IngredientService {
 	
@@ -22,6 +25,12 @@ public class IngredientServiceImpl implements IngredientService {
     @Autowired
 	private IngredientRepository ingredientRepository;
 
+    /**
+     * method takes ingredient body as an imput parameter
+     * checkes weather same ingredient id is present in database
+     * if not present then saves new ingredient
+     *
+     */
 	@Override
 	public Ingredient addIngredients(Ingredient ingredient) throws IngredientAlreadyExistsException{
 		
@@ -44,6 +53,14 @@ public class IngredientServiceImpl implements IngredientService {
 		return ingredient;
 	}
 
+	
+	/**
+     * method takes ingredient id and ingredient body as input parameters
+     * checkes weather ingredient with given iungredient id present in database 
+     * if present updates it with new data 
+     * else throws exception
+     *
+     */
 	@Override
 	public Ingredient updateIngredients(Integer ingredientId, Ingredient ingredient) throws IngredientIdNotFoundException {
 		
@@ -67,6 +84,13 @@ public class IngredientServiceImpl implements IngredientService {
 		
 	}
 
+	/**
+     * method takes ingredient id as an input parameter
+     * checkes weather ingredients with given ingredient id is present in database
+     * in presents return ingredients body
+     * else throws exception
+     *
+     */
 	@Override
 	public Ingredient getIngredient(Integer ingredientId) throws IngredientIdNotFoundException {
 		

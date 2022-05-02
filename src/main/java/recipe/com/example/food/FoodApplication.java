@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 //import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -20,6 +21,10 @@ public class FoodApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FoodApplication.class, args);
+		
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		System.out.println(encoder.encode("ramesh"));
+		System.out.println(encoder.encode("Suresh"));
 	}
 	
 	

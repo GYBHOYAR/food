@@ -78,7 +78,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return new userDetailServiceImpl();			
 	}
 	
-	@Bean	public BCryptPasswordEncoder passwordEncoder() {
+	@Bean	
+	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 	
@@ -87,9 +88,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-		daoAuthenticationProvider.setUserDetailsService(this.getUserDetails());
-		daoAuthenticationProvider.setPasswordEncoder(this.passwordEncoder());
-		return daoAuthenticationProvider;	}
+		daoAuthenticationProvider.setUserDetailsService(getUserDetails());
+		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+		return daoAuthenticationProvider;
+		}
 	
 	//configure method
 	@Override
@@ -101,8 +103,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	//url congiguration
 	@Override                                   
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/recipe/**").hasRole("ADMIN")
-		.antMatchers("/recipe/**","/ingredient/**").hasRole("CUSTOMER")
+		http.authorizeRequests().antMatchers("/recipe/**").hasAuthority("ADMIN")
+		.antMatchers("/recipe/**","/ingredient/**").hasAuthority("CUSTOMER")
 		.antMatchers("/**").permitAll().and().formLogin().and().csrf().disable();
 		
 		super.configure(http);

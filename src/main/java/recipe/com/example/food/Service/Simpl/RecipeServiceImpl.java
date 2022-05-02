@@ -18,6 +18,11 @@ import recipe.com.example.food.repository.IngredientRepository;
 import recipe.com.example.food.repository.RecipeRepository;
 import recipe.com.example.food.utility.GlobalResources;
 
+/**
+ * @author Gunjan Bhoyar
+ *
+ */
+
 @Service
 public class RecipeServiceImpl implements RecipeService{
 	
@@ -29,6 +34,13 @@ public class RecipeServiceImpl implements RecipeService{
 	//@Autowired
 	//private IngredientRepository ingredientRepository;
 
+	/**
+	 *This method takes entity body recipe ,
+	 *method checks weather input body already in database or not,
+	 *if recipe is not present in database it will add the given recipe body
+	 *and returns the same,
+	 *if recipe already exists exception thrown
+	 */
 	@Override
 	public recipes createRecipe(recipes recipe) throws RecipeAlreadyExistsException {
 		
@@ -54,6 +66,13 @@ public class RecipeServiceImpl implements RecipeService{
 		
 	}
 
+	/**
+	 * this method takes recipe-name as input,
+	 * method checks weather the recipe is present in database,
+	 * if recipe present in database method returns recipe,
+	 * if recipe not persent in database exception is thrown 
+	 *
+	 */
 	@Override
 	public recipes getRecipe(String recipeName) throws RecipeNameNotFoundException {
 		
@@ -68,6 +87,15 @@ public class RecipeServiceImpl implements RecipeService{
 		return recipe;
 		
 	}
+	
+	/**
+	 * This method takes recipe id as an input ,
+	 * checks weather recipe is present or not,
+	 * if recipe is present in database ,recipe gets deleted
+	 * if recipe is not present exception is thrown
+	 * 
+	 *
+	 */
 
 	@Override
 	public recipes deleteRecipe(Integer recipeId) throws RecipeIdNotFoundException {
@@ -87,6 +115,16 @@ public class RecipeServiceImpl implements RecipeService{
 		return recipe;
 	
 	}
+	
+	
+	/**
+	 * This method takes recipe id ,and updated recipe entity,
+	 * checks weather recipe is present in database or not.
+	 * if recipe is present ,it updated with new data,
+	 * if recipe not present exception is thrown
+	 * 
+	 *
+	 */
 
 	@Override
 	public recipes updateRecipe(Integer recipeId, recipes recipe) throws RecipeIdNotFoundException {
