@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import recipe.com.example.food.Exceptions.ElementExistsException;
+import recipe.com.example.food.Exceptions.NoSuchElementFoundException;
 import recipe.com.example.food.Exceptions.UserAlreadyExists;
-import recipe.com.example.food.Exceptions.UserException;
+//import recipe.com.example.food.Exceptions.UserException;
 import recipe.com.example.food.Exceptions.UserNotFoundException;
 import recipe.com.example.food.Service.UserService;
 import recipe.com.example.food.entity.user;
@@ -44,7 +46,7 @@ public class UserTest {
 	}
 	
 	@Test
-	void testAddUser() throws Exception {
+	void testAddUser() throws ElementExistsException {
 		user user = getUser();
 		when(userRepository.save(user)).thenReturn(user);
 		assertEquals(user,userService.createUser(user, null));
@@ -52,14 +54,14 @@ public class UserTest {
 	}
 	
 	@Test
-	void testViewUser() throws UserException {
+	void testViewUser() throws  NoSuchElementFoundException {
 		user user = getUser();
 		when(userRepository.findByUserName(user.getUserName())).thenReturn(Optional.of(user));
 		assertEquals(user,userService.getUser(user.getUserName()));
 	}
 	
 	@Test
-	void testDeleteUser() throws UserNotFoundException {
+	void testDeleteUser() throws  NoSuchElementFoundException {
 		user user = getUser();
 		when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(user));
 		userService.deleteUser(user.getUserId());
@@ -67,7 +69,7 @@ public class UserTest {
 	}
 	
 	@Test
-	void testUpdateUser() throws UserNotFoundException {
+	void testUpdateUser() throws NoSuchElementFoundException {
 		user user = getUser();
 		user.setFirstName("Mukesh");
 		user.setLastName("Ambani");
@@ -75,5 +77,6 @@ public class UserTest {
 		when(userRepository.save(user)).thenReturn(user);
 		assertThat(userService.updateUser(9, user)).isEqualTo(user);
 	}
+	
 	
 }

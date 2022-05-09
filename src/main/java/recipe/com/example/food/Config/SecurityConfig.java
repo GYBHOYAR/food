@@ -5,28 +5,28 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-//import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-//import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-//import io.swagger.models.HttpMethod;
+import io.swagger.models.HttpMethod;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	
-	@Autowired
-	UserDetailsService userDetailsService;
+	//@Autowired
+	//UserDetailsService userDetailsService;
 	/*@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
@@ -78,11 +78,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return new userDetailServiceImpl();			
 	}
 	
+	//@Bean	
+	//public BCryptPasswordEncoder passwordEncoder() {
+		//return new BCryptPasswordEncoder();
+	//}
+	@SuppressWarnings("deprecation")
 	@Bean	
-	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
+	public NoOpPasswordEncoder passwordEncoder() {
+		return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
 	}
-	
 
 
 	@Bean
@@ -103,8 +107,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	//url congiguration
 	@Override                                   
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/recipe/**").hasAuthority("ADMIN")
-		.antMatchers("/recipe/**","/ingredient/**").hasAuthority("CUSTOMER")
+		http.authorizeRequests().antMatchers("/recipe/**","/user/**").hasAuthority("ADMIN").
+		antMatchers("/recipe/**","/ingredient/**").hasAuthority("CUSTOMER")
 		.antMatchers("/**").permitAll().and().formLogin().and().csrf().disable();
 		
 		super.configure(http);
@@ -116,9 +120,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //		auth.inMemoryAuthentication().withUser("username").password("password")
 //		.roles("Admin");
 //		
-//		
+//
 //	}
-	
+//	
+//	
+//	
 //	@Override
 //	protected void configure (HttpSecurity http) throws Exception {
 //		http.csrf().disable();
@@ -130,7 +136,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //	public static NoOpPasswordEncoder apasswordEncoder() {
 //		return (NoOpPasswordEncoder)NoOpPasswordEncoder.getInstance();
 //	}
-
-
+//
+///////////////////////////////////////////////////
+	
 }                                                                                                                                                
 

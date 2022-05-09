@@ -6,11 +6,14 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import recipe.com.example.food.Exceptions.ElementExistsException;
+import recipe.com.example.food.Exceptions.NoSuchElementFoundException;
 import recipe.com.example.food.Exceptions.UserAlreadyExists;
-import recipe.com.example.food.Exceptions.UserException;
+//import recipe.com.example.food.Exceptions.UserException;
 import recipe.com.example.food.Exceptions.UserNotFoundException;
 import recipe.com.example.food.Service.UserService;
 import recipe.com.example.food.controller.UserController;
@@ -48,16 +51,16 @@ public class UserServiceImpl implements UserService {
 	 *
 	 */
 	@Override
-	public user createUser(user user, Set<userRole> userRoles) throws UserAlreadyExists {
+	public user createUser(user user, Set<userRole> userRoles) throws ElementExistsException {
 		
 		String methodName = "createUser()";
 		logger.info(methodName + "called");
 		
-		
+		//changed here the repository method
 		Optional<user> optional = userRepository.findByUserName(user.getUserName());
 		if(optional.isPresent()) {
-			System.out.println("User is already present!!");
-			throw new UserAlreadyExists("User is already present!!");
+			System.out.println("this User is already present !!");
+			throw new ElementExistsException("User is already present!!");
 		}
 		else 
 			//user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -73,17 +76,15 @@ public class UserServiceImpl implements UserService {
 	 *
 	 */
 	@Override
-	public user getUser(String userName) throws UserException {
+	public user getUser(String userName) throws NoSuchElementFoundException {
 		
 		String methodName = "getUser()";
 		logger.info(methodName + "called");
-		
-		//user local =  this.userRepository.findByUserName(userName);
 		Optional<user> optional = userRepository.findByUserName(userName);
 		if(optional.isEmpty()) {
-			throw new UserException("User not Exists");
+			throw new NoSuchElementFoundException("User does not Exists");
 		}
-			user user = optional.get();
+		user user = optional.get();
 			return user;
 		}
 	
@@ -96,7 +97,7 @@ public class UserServiceImpl implements UserService {
 	 *
 	 */
 	@Override
-	public user deleteUser(Integer userId) throws UserNotFoundException {
+	public user deleteUser(Integer userId) throws NoSuchElementFoundException {
 		
 		String methodName = "deleteUser()";
 		logger.info(methodName + "called");
@@ -104,7 +105,7 @@ public class UserServiceImpl implements UserService {
 		Optional<user> optional = userRepository.findById(userId);
 		
 		if(optional.isEmpty()) {
-			throw new UserNotFoundException("user with given Id doesnot exists") ;
+			throw new  NoSuchElementFoundException ("user with given Id doesnot exists") ;
 		}
 		user user = optional.get();
 		userRepository.deleteById(userId);;
@@ -119,7 +120,7 @@ public class UserServiceImpl implements UserService {
 	 *
 	 */
 	@Override
-	public user updateUser(Integer userId, user user ) throws UserNotFoundException{
+	public user updateUser(Integer userId, user user ) throws NoSuchElementFoundException{
 		
 		String methodName = "updateUser()";
 		logger.info(methodName + "called");
@@ -137,7 +138,8 @@ public class UserServiceImpl implements UserService {
 			
 		}
 		else
-			throw new UserNotFoundException("user with given Id does not exists") ;;
+			throw new  NoSuchElementFoundException 
+				("user with given Id does not exists") ;;
 			return user;
 	}
 

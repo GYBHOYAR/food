@@ -6,8 +6,10 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import recipe.com.example.food.Exceptions.ElementExistsException;
 import recipe.com.example.food.Exceptions.IngredientAlreadyExistsException;
 import recipe.com.example.food.Exceptions.IngredientIdNotFoundException;
+import recipe.com.example.food.Exceptions.NoSuchElementFoundException;
 import recipe.com.example.food.Service.IngredientService;
 import recipe.com.example.food.controller.UserController;
 import recipe.com.example.food.entity.Ingredient;
@@ -32,14 +34,13 @@ public class IngredientServiceImpl implements IngredientService {
      *
      */
 	@Override
-	public Ingredient addIngredients(Ingredient ingredient) throws IngredientAlreadyExistsException{
+	public Ingredient addIngredients(Ingredient ingredient) throws ElementExistsException{
 		
 		String methodName = "addIngredient()";
 		logger.info(methodName + "called");
 		
-		Optional<Ingredient> optional = ingredientRepository.
-				findByIngredientId(ingredient.getIngredientId());
-		try {
+		Optional<Ingredient> optional = ingredientRepository.findById(ingredient.getIngredientId());
+		/*try {
 			if(optional.isPresent()) {
 				throw new IngredientAlreadyExistsException("ingredient already exists");
 			}
@@ -48,9 +49,14 @@ public class IngredientServiceImpl implements IngredientService {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		//Ingredient ingredient1 = optional.get();
-		return ingredient;
+		}*/
+		
+			if(optional.isPresent()) {
+				throw new ElementExistsException("ingredient already exists");
+			}
+			else
+				 ingredientRepository.save(ingredient);
+				return ingredient;
 	}
 
 	
@@ -62,24 +68,21 @@ public class IngredientServiceImpl implements IngredientService {
      *
      */
 	@Override
-	public Ingredient updateIngredients(Integer ingredientId, Ingredient ingredient) throws IngredientIdNotFoundException {
+	public Ingredient updateIngredients(Integer ingredientId, Ingredient ingredient) throws NoSuchElementFoundException {
 		
 		String methodName = "updateIngredient()";
 		logger.info(methodName + "called");
 		
-		Optional<Ingredient> optional = ingredientRepository.
-				findByIngredientId(ingredientId);
+		Optional<Ingredient> optional = 
+				ingredientRepository.findById(ingredientId);
+		
 		if(optional.isPresent()){
 			Ingredient temp = optional.get();
-			temp.setIngredient(ingredient.getIngredient());
+			temp.setIngredient(ingredient.gettIngredient());
 		}
-//		else
-//			if(optional.isEmpty()){
-//				Ingredient temp = optional.get();
-//				temp.setIngredient(ingredient.getIngredient());
-//			}
+//		
 		else 
-				throw new IngredientIdNotFoundException("no ingredient present with this ingredient Id");
+				throw new NoSuchElementFoundException("no ingredient present with this ingredient Id");
 		return ingredient;
 		
 	}
@@ -92,19 +95,19 @@ public class IngredientServiceImpl implements IngredientService {
      *
      */
 	@Override
-	public Ingredient getIngredient(Integer ingredientId) throws IngredientIdNotFoundException {
+	public Ingredient getIngredient(Integer ingredientId) throws NoSuchElementFoundException {
 		
 		String methodName = "getIngrediet()";
 		logger.info(methodName + "called");
 		
-		Optional<Ingredient> optional = ingredientRepository.
-				findByIngredientId(ingredientId);
+		Optional<Ingredient> optional = 
+				ingredientRepository.findById(ingredientId);
 		if(optional.isEmpty()) {
-			throw new IngredientIdNotFoundException("no ingredient present with this ingredient Id");
+			throw new NoSuchElementFoundException("no ingredient present with this ingredient Id");
 		}
-		 
+		
 			Ingredient ingredient2 = optional.get();
-		  return ingredient2;
+		    return ingredient2;
 		
 		
 	}

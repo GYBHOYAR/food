@@ -5,8 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 //import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -14,7 +14,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
-@EnableWebSecurity
+//@EnableWebSecurity
 //@EnableSwagger2
 //@ComponentScan("recipe.com.example.food.Service.UserService")
 public class FoodApplication {
@@ -22,9 +22,9 @@ public class FoodApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(FoodApplication.class, args);
 		
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		System.out.println(encoder.encode("ramesh"));
-		System.out.println(encoder.encode("Suresh"));
+		//BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		//System.out.println(encoder.encode("ramesh"));
+		//System.out.println(encoder.encode("Suresh"));
 	}
 	
 	

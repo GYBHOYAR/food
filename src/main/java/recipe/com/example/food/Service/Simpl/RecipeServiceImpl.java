@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import recipe.com.example.food.Exceptions.ElementExistsException;
+import recipe.com.example.food.Exceptions.NoSuchElementFoundException;
 import recipe.com.example.food.Exceptions.RecipeAlreadyExistsException;
 import recipe.com.example.food.Exceptions.RecipeIdNotFoundException;
 import recipe.com.example.food.Exceptions.RecipeNameNotFoundException;
@@ -42,16 +44,15 @@ public class RecipeServiceImpl implements RecipeService{
 	 *if recipe already exists exception thrown
 	 */
 	@Override
-	public recipes createRecipe(recipes recipe) throws RecipeAlreadyExistsException {
+	public recipes createRecipe(recipes recipe) throws ElementExistsException {
 		
 		String methodName = "createRecipe()";
 		logger.info(methodName + "called");
 		
-		
 		Optional<recipes> optional = recipeRepository.findByRecipeName(recipe.getRecipeName());
-		try {
+		/*try {
 			if(optional.isPresent()) {
-				throw new RecipeAlreadyExistsException("recipe already exists");
+				throw new ElementExistsException("recipe already exists");
 			}
 			else {
 				 recipeRepository.save(recipe);
@@ -61,8 +62,13 @@ public class RecipeServiceImpl implements RecipeService{
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}*/
+		if(optional.isPresent()) {
+			throw new ElementExistsException("recipe already exists");
 		}
-		return recipe;
+		else
+		 recipeRepository.save(recipe);
+		 return recipe;
 		
 	}
 
@@ -74,14 +80,14 @@ public class RecipeServiceImpl implements RecipeService{
 	 *
 	 */
 	@Override
-	public recipes getRecipe(String recipeName) throws RecipeNameNotFoundException {
+	public recipes getRecipe(String recipeName) throws NoSuchElementFoundException {
 		
 		String methodName = "getRecipe()";
 		logger.info(methodName + "called");
 		
 		Optional<recipes> optional = recipeRepository.findByRecipeName(recipeName);
 		if(optional.isEmpty()) {
-			throw new RecipeNameNotFoundException("no recipe present with this name ");
+			throw new NoSuchElementFoundException("no recipe present with this name ");
 		}
 		recipes recipe = optional.get();
 		return recipe;
@@ -98,7 +104,7 @@ public class RecipeServiceImpl implements RecipeService{
 	 */
 
 	@Override
-	public recipes deleteRecipe(Integer recipeId) throws RecipeIdNotFoundException {
+	public recipes deleteRecipe(Integer recipeId) throws NoSuchElementFoundException {
 		
 		String methodName = "deleteRecipe()";
 		logger.info(methodName + "called");
@@ -106,7 +112,7 @@ public class RecipeServiceImpl implements RecipeService{
 		
 		Optional<recipes> optional = recipeRepository.findById(recipeId);
 		if(optional.isEmpty()) {
-			throw new RecipeIdNotFoundException("recipe with id"+recipeId+"not present");
+			throw new NoSuchElementFoundException("recipe with id"+recipeId+"not present");
 		} 
 		else{
 			recipeRepository.deleteById(recipeId);
@@ -127,7 +133,7 @@ public class RecipeServiceImpl implements RecipeService{
 	 */
 
 	@Override
-	public recipes updateRecipe(Integer recipeId, recipes recipe) throws RecipeIdNotFoundException {
+	public recipes updateRecipe(Integer recipeId, recipes recipe) throws NoSuchElementFoundException {
 		
 		String methodName = "updateRecepie()";
 		logger.info(methodName + "called");
@@ -143,7 +149,7 @@ public class RecipeServiceImpl implements RecipeService{
 			//temp.setIngredients(recipe.getIngredients());
 			temp.setDate(recipe.getDate());
 		}
-		else throw new RecipeIdNotFoundException("recipe with id"+recipeId+"not present");
+		else throw new NoSuchElementFoundException("recipe with id"+recipeId+"not present");
 		return recipe;
 	}
 

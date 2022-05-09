@@ -30,7 +30,7 @@ public class Ingredient {
 		this.ingredientId = ingredientId;
 	}
 
-	public HashMap<String, String> getIngredient() {
+	public HashMap<String, String> gettIngredient() {
 		return ingredient;
 	}
 

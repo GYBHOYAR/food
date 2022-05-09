@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import recipe.com.example.food.Exceptions.ElementExistsException;
+import recipe.com.example.food.Exceptions.NoSuchElementFoundException;
 import recipe.com.example.food.Service.RecipeService;
 import recipe.com.example.food.entity.Category;
 import recipe.com.example.food.entity.recipes;
@@ -42,7 +44,7 @@ public class recipesTest {
 	}
 	
 	@Test
-	void testAddRecipe() throws Exception{
+	void testAddRecipe() throws ElementExistsException{
 		recipes recipe = getRecipe();
 		when(recipeRepository.save(recipe)).thenReturn(recipe);
 		assertEquals(recipe,recipeService.createRecipe(recipe));
@@ -50,7 +52,7 @@ public class recipesTest {
 	
 	 
 	@Test
-	void GetRecipe() throws Exception{
+	void GetRecipe() throws NoSuchElementFoundException{
 		recipes recipe = getRecipe();
 		
 		String RecipeName = "Panir tikka";
@@ -61,7 +63,7 @@ public class recipesTest {
 	}
 	
 	@Test
-	void DeleteRecipe() throws Exception{
+	void DeleteRecipe() throws NoSuchElementFoundException{
 		recipes recipe = getRecipe();
 	    when(recipeRepository.findById(9)).thenReturn(Optional.of(recipe));
 	    recipeService.deleteRecipe(9);
@@ -70,7 +72,7 @@ public class recipesTest {
 	}
 	
 	@Test
-	void UpdateRecipe() throws Exception {
+	void UpdateRecipe() throws NoSuchElementFoundException {
 		recipes recipe = getRecipe();
 		recipe.setRecipeName("Chilli panir tikka");
 		recipe.setInstructions("ABC");

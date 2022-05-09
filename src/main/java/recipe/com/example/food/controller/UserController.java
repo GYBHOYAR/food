@@ -7,13 +7,15 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 //import org.springframework.security.access.prepost.PreAuthorize;
 //import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,14 +23,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import recipe.com.example.food.Exceptions.ElementExistsException;
+import recipe.com.example.food.Exceptions.NoSuchElementFoundException;
 import recipe.com.example.food.Exceptions.UserAlreadyExists;
-import recipe.com.example.food.Exceptions.UserException;
+//import recipe.com.example.food.Exceptions.UserException;
 import recipe.com.example.food.Exceptions.UserNotFoundException;
 import recipe.com.example.food.Service.UserService;
 import recipe.com.example.food.entity.Role;
@@ -38,8 +43,9 @@ import recipe.com.example.food.entity.userRole;
 import recipe.com.example.food.utility.GlobalResources;
 
 @RestController
+//@Controller
 @RequestMapping("/user")
-@Api(value = "/user" ,tags = "recipe user management")
+//@Api(value = "/user" ,tags = "recipe user management")
 
 //@EnableGlobalMethodSecurity(prePostEnabled=true)
 public class UserController {
@@ -56,6 +62,7 @@ private Logger logger = GlobalResources.getLogger(UserController.class);
 	
 	
 	@PostMapping("/add")
+	//@RequestMapping(value = "/add",method = RequestMethod.POST)
 	@ApiOperation(value = "create user", notes = "Create new user" ,tags = {"user management"})
 		@ApiResponses( value = {@ApiResponse(code = 200 ,message = "user created sucessfully"),
 		@ApiResponse(code = 404 ,message = "Invalid data"),
@@ -63,7 +70,7 @@ private Logger logger = GlobalResources.getLogger(UserController.class);
 	})
 	
 	
-	public user createUser(@RequestBody user user) throws Exception {
+	public user createUser(@RequestBody user user) throws ElementExistsException {
 		
 		String methodName = "createUser()";
 		logger.info(methodName + "called");
@@ -86,13 +93,14 @@ private Logger logger = GlobalResources.getLogger(UserController.class);
 	
 	///////////////////////////////////////////////////////////////////////////////////
 	
-	@GetMapping("/get/{username}")
+	@GetMapping("/get/{userName}")
+	//@RequestMapping(value = "/get/{username}",method = RequestMethod.GET)
 	@ApiOperation(value = "get user", notes = "get user from database" ,tags = {"user management"})
 	@ApiResponses( value = {@ApiResponse(code = 200 ,message = "get operation sucessful sucessfully"),
 	@ApiResponse(code = 404 ,message = "Invalid data"),
 	@ApiResponse(code = 200 ,message = "Internal server error")
 })
-	public user getUser(@PathVariable("userName") String userName) throws UserException {
+	public user getUser(@PathVariable("userName") String userName) throws NoSuchElementFoundException   {
 		
 		String methodName = "getUser()";
 		logger.info(methodName + "called");
@@ -103,26 +111,29 @@ private Logger logger = GlobalResources.getLogger(UserController.class);
 	
 	///////////////////////////////////////////////////////////////////////////////////
 	@DeleteMapping("/delete/{userId}")
+	//@RequestMapping(value = "/delete/{userId}" , method = RequestMethod.DELETE)
 	@ApiOperation(value = "delete user", notes = "Delete user from database" ,tags = {"user management"})
 	@ApiResponses( value = {@ApiResponse(code = 200 ,message = "user deleted sucessfully"),
 	@ApiResponse(code = 404 ,message = "Invalid data"),
 	@ApiResponse(code = 200 ,message = "Internal server error")
 })
-	public user deleteUser(@PathVariable("userId") Integer userId) throws UserNotFoundException {
+	public user deleteUser(@PathVariable("userId") Integer userId) throws NoSuchElementFoundException {
 		
 		String methodName = "deleteUser()";
 		logger.info(methodName + "called");
 		
 		return this.userService.deleteUser(userId);
 	}
-	
+//////////////////////////////////////////////////////////////////////////	
 	@PutMapping("/update/{userId}")
+	//@RequestMapping(value = "/update/{userId}",method = RequestMethod.PUT)
 	@ApiOperation(value = "update user", notes = "Update user from database" ,tags = {"user management"})
 	@ApiResponses( value = {@ApiResponse(code = 200 ,message = "user updated sucessfully"),
 	@ApiResponse(code = 404 ,message = "Invalid data"),
 	@ApiResponse(code = 200 ,message = "Internal server error")
 	})
-	public user updateUser(@PathVariable("userId") Integer userId,@RequestBody user user) throws UserNotFoundException {
+	public user updateUser(@PathVariable("userId") Integer userId,@RequestBody user user) 
+			throws NoSuchElementFoundException {
 		
 		String methodName = "updateUser()";
 		logger.info(methodName + "called");
@@ -132,6 +143,8 @@ private Logger logger = GlobalResources.getLogger(UserController.class);
 	
 	
 	@GetMapping("/users")
+	//@RequestMapping(value = "/users",method = RequestMethod.GET)
+
 	public List<user> getAllUsers() {
 		
 		String methodName = "getAllUsers()";

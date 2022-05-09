@@ -8,8 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import recipe.com.example.food.Exceptions.ElementExistsException;
+import recipe.com.example.food.Exceptions.NoSuchElementFoundException;
 import recipe.com.example.food.Service.IngredientService;
 import recipe.com.example.food.entity.Ingredient;
+import recipe.com.example.food.entity.recipes;
 import recipe.com.example.food.repository.IngredientRepository;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,23 +33,32 @@ public class IngredientTest {
 
 	private Ingredient getIngredients() {
 		Ingredient ingredient = new Ingredient();
+	    
 		
 		HashMap<String,String> temp = new HashMap<String,String>();
 			temp.put("Lemon", "1 Dozon");
 			temp.put("Suger", "50 gm");
 			temp.put("Salt","10 gm");
 		
-		ingredient.setIngredientId(9);
+		ingredient.setIngredientId(50);
+	    ingredient.setIngredient(temp);
+		 
+		return ingredient;
+	}
+	
+	private recipes getRecipes() {
 		
-		 
-		 ingredient.setIngredient(temp);
-		 //ingredient.setIngredient);
-		 
-		 return ingredient;
+		recipes recipes = new recipes();
+		
+		   recipes.setRecipeId(50);
+		   recipes.setIngredients(getIngredients());
+		   recipes.setRecipeName("Sharbat");
+		
+		return recipes;
 	}
 	
 	@Test
-	void TestAddIngredient() throws Exception{
+	void TestAddIngredient() throws ElementExistsException{
 		Ingredient ingredient = getIngredients();
 		
 		when(ingredientRepository.save(ingredient)).thenReturn(ingredient);
@@ -55,20 +67,16 @@ public class IngredientTest {
 	}
 	
 	@Test
-	void TestGetIngredient() throws Exception{
+	void TestGetIngredient() throws NoSuchElementFoundException{
 		Ingredient ingredient = getIngredients();
-		System.out.println(ingredient.toString());
-		//System.out.println(ingredientService.getIngredient(9));
-		ingredientRepository.save(ingredient);
-		ingredientService.addIngredients(ingredient);
-		//Integer IngredientId = 9;
-		when(ingredientRepository.findById(9)).thenReturn(Optional.of(ingredient));
-		assertEquals(ingredient,ingredientService.getIngredient(9));
-		
+		when(ingredientRepository.findById(ingredient.getIngredientId())).thenReturn(Optional.of(ingredient));
+		//assertEquals(ingredient.getIngredientId(),9);
+		assertEquals(ingredientService.getIngredient(50),ingredient);
+		//.equals(ingredientService.getIngredient(9).gettIngredient()),true
 	}
 	
 	@Test
-	void TestUpdateIngredient() throws Exception{
+	void TestUpdateIngredient() throws NoSuchElementFoundException{
 		Ingredient ingredient = getIngredients();
 		HashMap<String,String> temp = new HashMap<String,String>();
 		temp.put("orange", "1 Dozon");
@@ -77,12 +85,12 @@ public class IngredientTest {
 		
 		ingredient.setIngredient(temp);
 		
-		
-		ingredientService.addIngredients(ingredient);
+		//ingredientRepository.save(ingredient);
+		//ingredientService.addIngredients(ingredient);
 		
 		when(ingredientRepository.findById(ingredient.getIngredientId())).thenReturn(Optional.of(ingredient));
 		when(ingredientRepository.save(ingredient)).thenReturn(ingredient);
-		assertThat(ingredientService.updateIngredients(9, ingredient)).isEqualTo(ingredient);
+		assertThat(ingredientService.updateIngredients(50, ingredient)).isEqualTo(ingredient);
 	
 	}
 }
