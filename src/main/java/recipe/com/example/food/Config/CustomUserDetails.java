@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.GrantedAuthority;
 //import org.springframework.security.core.GrantedAuthority;
 //import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,7 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import recipe.com.example.food.entity.user;
-
+//@Configuration
 public class CustomUserDetails implements UserDetails {
 	
 	//@Autowired(required = true)
@@ -30,7 +31,7 @@ public class CustomUserDetails implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(
-				this.user.getUserRole().toUpperCase());
+				this.user.getUserRole());
 		return List.of(simpleGrantedAuthority);
 	}
 
@@ -73,9 +74,9 @@ public class CustomUserDetails implements UserDetails {
 		return true;
 	}
 	
-	public user getUserDetails() {
-		return user;
+	//public user getUserDetails() {
+		//return user;
 		
-	}
+	//}
 
 }

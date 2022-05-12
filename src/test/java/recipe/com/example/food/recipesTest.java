@@ -14,6 +14,7 @@ import recipe.com.example.food.Exceptions.ElementExistsException;
 import recipe.com.example.food.Exceptions.NoSuchElementFoundException;
 import recipe.com.example.food.Service.RecipeService;
 import recipe.com.example.food.entity.Category;
+import recipe.com.example.food.entity.Ingredient;
 import recipe.com.example.food.entity.recipes;
 import recipe.com.example.food.repository.RecipeRepository;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,6 +32,14 @@ public class recipesTest {
 	@Autowired
 	RecipeService recipeService;
 	
+	private Ingredient getIngredient() {
+		Ingredient ingredient = new Ingredient();
+		ingredient.setIngredientId(10);
+		return ingredient;
+		
+	}
+	
+	
 	private recipes getRecipe() {
 		recipes recipe = new recipes();
 		
@@ -41,6 +50,8 @@ public class recipesTest {
 		recipe.setCategory(Category.Vegetarian);
 		recipe.setDate(LocalDate.now());
 		 return recipe;
+		 
+		
 	}
 	
 	@Test

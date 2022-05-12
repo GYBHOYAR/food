@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import io.swagger.models.HttpMethod;
 
+@SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -78,10 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return new userDetailServiceImpl();			
 	}
 	
-	//@Bean	
-	//public BCryptPasswordEncoder passwordEncoder() {
-		//return new BCryptPasswordEncoder();
-	//}
+	
 	@SuppressWarnings("deprecation")
 	@Bean	
 	public NoOpPasswordEncoder passwordEncoder() {
@@ -97,47 +95,48 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return daoAuthenticationProvider;
 		}
 	
-	//configure method
+	
 	@Override
  protected void configure(AuthenticationManagerBuilder auth) throws Exception{
 		auth.authenticationProvider(authenticationProvider());
 	}
 	
 	
-	//url congiguration
 	@Override                                   
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/recipe/**","/user/**").hasAuthority("ADMIN").
-		antMatchers("/recipe/**","/ingredient/**").hasAuthority("CUSTOMER")
-		.antMatchers("/**").permitAll().and().formLogin().and().csrf().disable();
+		http.authorizeRequests().antMatchers("/user/**").hasAuthority("ADMIN").
+		antMatchers("/recipe/**","/ingredient/**").hasRole("CUSTOMER")
+		.antMatchers("/**").permitAll().and().formLogin();
 		
-		super.configure(http);
+		http.csrf().disable();
+		
+	super.configure(http);
+	System.out.println("inside configure");
 	}
 	
 //////////////////////////first//////////////////////////////////////////////////	
-//	@Override
-//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.inMemoryAuthentication().withUser("username").password("password")
-//		.roles("Admin");
-//		
-//
-//	}
-//	
-//	
-//	
-//	@Override
-//	protected void configure (HttpSecurity http) throws Exception {
-//		http.csrf().disable();
-//		http.authorizeRequests().antMatchers("/user/*","/recipe/*","/ingredient/*").fullyAuthenticated().and()
-//		.httpBasic();
-//	}
-//	
-//	@Bean
-//	public static NoOpPasswordEncoder apasswordEncoder() {
-//		return (NoOpPasswordEncoder)NoOpPasswordEncoder.getInstance();
-//	}
-//
+	/*@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.inMemoryAuthentication().withUser("username").password("password")
+		.roles("Admin");
+		
+
+	}
+		
+	
+	@Override
+	protected void configure (HttpSecurity http) throws Exception {
+		http.csrf().disable();
+		http.authorizeRequests().antMatchers("/user/*","/recipe/*","/ingredient/*").fullyAuthenticated().and()
+		.httpBasic();
+	}
+	
+	@Bean
+	public static NoOpPasswordEncoder apasswordEncoder() {
+	return (NoOpPasswordEncoder)NoOpPasswordEncoder.getInstance();
+	}*/
+
 ///////////////////////////////////////////////////
 	
-}                                                                                                                                                
+}                                                                                                                                               
 

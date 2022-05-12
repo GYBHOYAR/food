@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -57,8 +58,17 @@ public class Ingredient {
 		return "Ingredient [ingrediantId=" + ingredientId + ", ingredient=" + ingredient + "]";
 	}
 	
-	@OneToOne
-	public recipes recipes;
+//	@OneToOne
+//	@JoinColumn(name = "recipe_id")
+//	public recipes recipes;
+//
+//	public recipes getRecipes() {
+//		return recipes;
+//	}
+//
+//	public void setRecipes(recipes recipes) {
+//		this.recipes = recipes;
+//	}
 	
 	
 	

@@ -59,7 +59,8 @@ public class recipes {
 	@NotNull
 	private int serving;
 	
-	@OneToOne(fetch = FetchType.EAGER,mappedBy="recipes",cascade = CascadeType.ALL)
+	//(fetch = FetchType.EAGER,mappedBy="recipes",cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "ingrediantId")
 	private Ingredient ingredients;
 

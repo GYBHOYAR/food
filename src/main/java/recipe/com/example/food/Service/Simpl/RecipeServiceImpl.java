@@ -33,8 +33,8 @@ public class RecipeServiceImpl implements RecipeService{
 	@Autowired
 	private RecipeRepository recipeRepository;
 	
-	//@Autowired
-	//private IngredientRepository ingredientRepository;
+	@Autowired
+	private IngredientRepository ingredientRepository;
 
 	/**
 	 *This method takes entity body recipe ,
@@ -68,6 +68,7 @@ public class RecipeServiceImpl implements RecipeService{
 		}
 		else
 		 recipeRepository.save(recipe);
+		 //ingredientRepository.save(recipe.getIngredients());
 		 return recipe;
 		
 	}
